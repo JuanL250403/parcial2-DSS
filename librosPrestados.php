@@ -20,12 +20,8 @@ require_once("usuarios.controller.php");
 
     $usuarioCon = new usuarioController();
     $librosCon = new libroController();
-    if (isset($_POST["reservar"])) {
-        $id = isset($_POST["idLibro"]) ? $_POST["idLibro"] : "";
-        $librosCon->reservar($id);
-    }
 
-    $libros = $librosCon->obtenerLibros();
+    $libros = $librosCon->listarLibrosPrestados();
 
     session_start();
     $usuario = isset($_SESSION['sesion']) ? $_SESSION['sesion'] : "";
@@ -33,6 +29,7 @@ require_once("usuarios.controller.php");
     ?>
 
     <header class="p-3 bg-dark text-white">
+
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -69,7 +66,7 @@ require_once("usuarios.controller.php");
         </div>
     </header>
     <section class="m-5">
-    <a href="librosPrestados.php">libros prestados</a>
+        <a href="home.php">Inicio</a>
         <?php
         if (!$libros):
         ?>
@@ -77,7 +74,7 @@ require_once("usuarios.controller.php");
         <?php
         else:
         ?>
-            <h2 class="text-center">Catalogo de libros</h2>
+            <h2 class="text-center">Libros prestados</h2>
             <div class="d-flex flex-wrap justify-content-center">
                 <?php
                 foreach ($libros as $libro):
@@ -88,10 +85,6 @@ require_once("usuarios.controller.php");
                             <h5 class="card-title"><?= $libro['nombre'] ?></h5>
                             <p class="card-text"><?= $libro['descripcion'] ?></p>
                         </div>
-                        <form action=<?= $_SERVER['PHP_SELF'] ?> method="post">
-                            <input type="hidden" name="idLibro" value=<?= $libro['id'] ?>>
-                            <button type="submit" name="reservar"   >Reservar</button>
-                        </form>
                     </div>
                 <?php endforeach ?>
             </div>
